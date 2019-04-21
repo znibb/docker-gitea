@@ -4,12 +4,21 @@ services:
   server:
     image: gitea/gitea:1.7.3
     environment:
+      # Application name, used in the page title
+      - APP_NAME="CHANGE THIS"
+      # Run mode, dev/prod
+      - RUN_MODE=prod
+      # Only admin can create accounts
+      - DISABLE_REGISTRATION=true
+      # Require signin to view anything
+      - REQUIRE_SIGNIN_VIEW=true
+      # Database parameters
       - DB_TYPE=postgres
       - DB_HOST=db:5432
       - DB_NAME=gitea
       - DB_USER=gitea
-      - DB_PASSWD=RbJpoLpkPHZQE8g93Alb
-    command: /bin/s6-svscan /etc/s6
+      - DB_PASSWD="REPLACED_AT_RUNTIME"
+    command: sh -c "export DB_PASSWD=$$(cat /run/secrets/gitea_db_passwd) && /bin/s6-svscan /etc/s6"
     deploy:
       replicas: 1
       restart_policy:
@@ -22,7 +31,7 @@ services:
       - data:/data
     ports:
       - "3000:3000"
-      - "222:22"
+      - "2201:22"
     depends_on:
       - db
 
