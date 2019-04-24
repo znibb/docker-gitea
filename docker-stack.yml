@@ -4,14 +4,8 @@ services:
   server:
     image: gitea/gitea:latest
     environment:
-      # Application name, used in the page title
-      - APP_NAME="CHANGE THIS"
       # Run mode, dev/prod
       - RUN_MODE=prod
-      # Only admin can create accounts
-      - DISABLE_REGISTRATION=true
-      # Require signin to view anything
-      - REQUIRE_SIGNIN_VIEW=true
       # Database parameters
       - DB_TYPE=postgres
       - DB_HOST=db:5432
