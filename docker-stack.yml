@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   server:
-    image: gitea/gitea:1.7.3
+    image: gitea/gitea:latest
     environment:
       # Application name, used in the page title
       - APP_NAME="CHANGE THIS"
@@ -36,7 +36,7 @@ services:
       - db
 
   db:
-    image: postgres:11.2
+    image: postgres:latest
     environment:
       - POSTGRES_USER=gitea
       - POSTGRES_PASSWORD_FILE=/run/secrets/gitea_db_passwd
