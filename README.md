@@ -1,4 +1,6 @@
-# Gitea Docker image
+# Gitea in Docker
+- Linux x64
+- Deployed with Docker Swarm
 
 ## Before starting
 1. Download stack file: `wget https://raw.githubusercontent.com/znibb/docker-gitea/master/docker-stack.yml`
