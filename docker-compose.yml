@@ -1,0 +1,60 @@
+services:
+  gitea:
+    image: gitea/gitea:1.22.0
+    container_name: gitea
+    restart: unless-stopped
+    environment:
+      USER: git
+      USER_UID: ${UID:?}
+      USER_GID: ${GID:?}
+      GITEA__database__DB_TYPE: postgres
+      GITEA__database__HOST: db:5432
+      GITEA__database__NAME: gitea
+      GITEA__database__USER: gitea
+      GITEA__database__PASSWD: ${POSTGRES_PASSWORD:?}
+      GITEA__mailer__ENABLED: true
+      GITEA__mailer__FROM: ${EMAIL_USERNAME:?}
+      GITEA__mailer__USER: ${EMAIL_USERNAME:?}
+      GITEA__mailer__PASSWD: ${EMAIL_PASSWORD:?}
+      GITEA__mailer__PROTOCOL: smtps # SSL
+      GITEA__mailer__SMTP_ADDR: ${EMAIL_HOST:?}
+      GITEA__mailer__SMTP_PORT: ${EMAIL_PORT:?}
+      GITEA__oauth2_client__ENABLE_AUTO_REGISTRATION: true
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.gitea.entrypoints=https
+      - traefik.http.routers.gitea.rule=Host(`git.${TRAEFIK_DOMAIN:?}`)
+      - traefik.http.routers.gitea.tls=true
+      - traefik.http.routers.gitea.tls.certresolver=cloudflare
+      - traefik.http.services.gitea.loadbalancer.server.port=3000
+      - traefik.http.routers.gitea.middlewares=authentik@file
+    networks:
+      - gitea
+      - traefik
+    ports:
+      - 127.0.0.1:2222:22
+    volumes:
+      - ./data/gitea:/data
+      - /home/git/.ssh:/data/git/.ssh
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - db
+  
+  db:
+    image: docker.io/library/postgres:16-alpine
+    container_name: gitea-db
+    environment:
+      POSTGRES_DB: gitea
+      POSTGRES_USER: gitea
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?}
+    networks:
+      - gitea
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+
+networks:
+  gitea:
+    name: gitea
+  traefik:
+    external: true
