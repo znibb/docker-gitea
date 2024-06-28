@@ -20,6 +20,7 @@ services:
       GITEA__mailer__SMTP_ADDR: ${EMAIL_HOST:?}
       GITEA__mailer__SMTP_PORT: ${EMAIL_PORT:?}
       GITEA__oauth2_client__ENABLE_AUTO_REGISTRATION: true
+      GITEA__repository__DEFAULT_BRANCH: main
     labels:
       - traefik.enable=true
       - traefik.http.routers.gitea.entrypoints=https
