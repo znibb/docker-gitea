@@ -1,12 +1,11 @@
-<!-- omit from toc -->
-# docker-gitea
+# docker-gitea <!-- omit from toc -->
 Docker compose setup to run a git server with a Gitea web frontend.
 
 This setup assumes that you're already running:
   - A [Traefik reverse-proxy](https://github.com/znibb/docker-traefik)
   - An [Authentik](https://github.com/znibb/docker-authentik) Identity Provider
 
-**Table of Contents**
+## Table of Contents <!-- omit from toc -->
 - [1. Docker Setup](#1-docker-setup)
 - [2. Host setup](#2-host-setup)
 - [3. Client setup](#3-client-setup)
