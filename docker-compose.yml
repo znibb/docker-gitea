@@ -5,8 +5,8 @@ services:
     restart: unless-stopped
     environment:
       USER: git
-      USER_UID: ${UID:?}
-      USER_GID: ${GID:?}
+      USER_UID: ${GIT_USER_UID:?}
+      USER_GID: ${GIT_USER_GID:?}
       GITEA__database__DB_TYPE: postgres
       GITEA__database__HOST: db:5432
       GITEA__database__NAME: gitea
@@ -45,6 +45,7 @@ services:
   db:
     image: docker.io/library/postgres:16-alpine
     container_name: gitea-db
+    user: ${HOST_USER_UID:?}:${HOST_USER_GID:?}
     environment:
       POSTGRES_DB: gitea
       POSTGRES_USER: gitea
