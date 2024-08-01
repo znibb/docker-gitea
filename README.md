@@ -1,3 +1,5 @@
+<!-- omit from toc -->
+# docker-gitea
 Docker compose setup to run a git server with a Gitea web frontend.
 
 This setup assumes that you're already running:
